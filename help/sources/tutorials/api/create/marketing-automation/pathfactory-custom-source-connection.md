@@ -5,7 +5,7 @@ title: Create a custom source connection for Pathfactory using the Flow Service 
 description: Learn how to create custom source connection for Pathfactory using the Flow Service API.
 exl-id: fd4821c7-6fe1-4cad-8e13-3549dbe0ce98
 ---
-# Create a dataflow for [!DNL Pathfactory] using the Flow Service API
+# Create a custom source connection for [!DNL Pathfactory] using the Flow Service API
 
 The following tutorial walks you through the steps to create a custom source connection and a dataflow to bring [!DNL Pathfactory] data to Platform using the [[!DNL Flow Service] API](https://www.adobe.io/experience-platform-apis/references/flow-service/).
 
@@ -15,7 +15,7 @@ Before you can connect [!DNL Pathfactory] to Adobe Experience Platform using Bas
 
 ## Create a base connection {#base-connection}
 
-Once you have retrieved your [!DNL Pathfactory] authentication credentials, you can now start the process of creating dataflow to bring [!DNL Pathfactory] data to Platform. The first step in creating a dataflow is to create a base connection.
+Once you have retrieved your [!DNL Pathfactory] authentication credentials, you can now start the process of creating custom source connection to bring [!DNL Pathfactory] data to Platform. The first step in creating a dataflow is to create a base connection.
 
 A base connection retains information between your source and Platform, including your source's authentication credentials, the current state of the connection, and your unique base connection ID. The base connection ID allows you to explore and navigate files from within your source and identify the specific items that you want to ingest, including information regarding their data types and formats.
 
