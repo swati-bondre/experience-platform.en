@@ -1,53 +1,29 @@
 ---
 keywords: Experience Platform;home;popular topics;sources;connectors;source connectors;sources sdk;sdk;SDK
-title: Documentation on PathFactory Custom Source Connection
-description: Learn how to create custom source connection in Adobe Experience Platform.
-exl-id: c6927a71-3721-461e-9752-8ebc0b7b1cca
+solution: Experience Platform
+title: Create a custom source connection for Pathfactory using the Flow Service API
+description: Learn how to create custom source connection for Pathfactory using the Flow Service API.
+exl-id: fd4821c7-6fe1-4cad-8e13-3549dbe0ce98
 ---
-# Create a *YOURSOURCE* connection using the [!DNL Flow Service] API
+# Create a dataflow for [!DNL Pathfactory] using the Flow Service API
 
-*As you go through this template, replace or delete all the paragraphs in italics (starting with this one).*
-
-*Start by updating the metadata (title and description) at the top of the page. Please ignore all instances of DNL on this page. This is a tag that helps our machine translation processes correctly translate the page into the multiple languages that we support. We will add tags to your documentation after you submit it.*
-
-## Overview
-
-*Provide a short overview of your company, including the value it provides to customers. Include a link to your product documentation homepage for further reading.*
-
->[!IMPORTANT]
->
->This documentation page was created by the *YOURSOURCE* team. For any inquiries or update requests, please contact them directly at *Insert link or email address where you can be reached for updates*.
+The following tutorial walks you through the steps to create a custom source connection and a dataflow to bring [!DNL Pathfactory] data to Platform using the [[!DNL Flow Service] API](https://www.adobe.io/experience-platform-apis/references/flow-service/).
 
 ## Prerequisites
+	`	Q1
+Before you can connect [!DNL Pathfactory] to Adobe Experience Platform using Basic auth refresh code, you must first retrieve your access token for [!DNL Pathfactory.] See the [[!DNL Pathfactory] Basic auth guide](https://Pathfactory.com/developer/marketing/guides/access-user-data-basic-auth/) for detailed instructions on finding your access token.
 
-*Add information in this section about anything that customers need to be aware of before starting to set up the source in the Adobe Experience Platform user interface. This can be about:*
+## Create a base connection {#base-connection}
 
-* *needing to be added to an allow list*
-* *requirements for email hashing*
-* *any account specifics on your side*
-* *how to obtain an API key to connect to your platform*
-
-### Gather required credentials
-
-In order to connect *YOURSOURCE* to Experience Platform, you must provide values for the following connection properties:
-
-| Credential | Description | Example |
-| --- | --- | --- |
-| *credential one* | *Please add a brief description to your source's authentication credential here* | *Please add an example of your source's authentication credential here* |
-| *credential two* | *Please add a brief description to your source's authentication credential here* | *Please add an example of your source's authentication credential here* |
-| *credential three* | *Please add a brief description to your source's authentication credential here* | *Please add an example of your source's authentication credential here* |
-
-For more information on these credentials, see the *YOURSOURCE* authentication documentation. *Please add link to your platform's authentication documentation here*.
-
-## Connect *YOURSOURCE* to Platform using the [!DNL Flow Service] API
-
-The following tutorial walks you through the steps to create a *YOURSOURCE* source connection and create a dataflow to bring *YOURSOURCE* data to Platform using the [[!DNL Flow Service] API](https://www.adobe.io/experience-platform-apis/references/flow-service/).
-
-### Create a base connection {#base-connection}
+Once you have retrieved your [!DNL Pathfactory] authentication credentials, you can now start the process of creating dataflow to bring [!DNL Pathfactory] data to Platform. The first step in creating a dataflow is to create a base connection.
 
 A base connection retains information between your source and Platform, including your source's authentication credentials, the current state of the connection, and your unique base connection ID. The base connection ID allows you to explore and navigate files from within your source and identify the specific items that you want to ingest, including information regarding their data types and formats.
 
-To create a base connection ID, make a POST request to the `/connections` endpoint while providing your *YOURSOURCE* authentication credentials as part of the request body.
+[!DNL Pathfactory] supports both basic authentication and Basic auth refresh code. See the following examples for guidance on how to authenticate with either authentication types.
+
+### Create a [!DNL Pathfactory] base connection using basic authentication
+
+To create a [!DNL Pathfactory] base connection using basic authentication, make a POST request to the `/connections` endpoint of [!DNL Flow Service] API while providing credentials for your `authorizationTestUrl`, `username`, and `password`.
 
 **API format**
 
@@ -57,41 +33,43 @@ POST /connections
 
 **Request**
 
-The following request creates a base connection for *YOURSOURCE*:
+The following request creates a base connection for [!DNL Pathfactory]:
 
 ```shell
 curl -X POST \
-    'https://platform.adobe.io/data/foundation/flowservice/connections' \
-    -H 'Authorization: Bearer {ACCESS_TOKEN}' \
-    -H 'x-api-key: {API_KEY}' \
-    -H 'x-gw-ims-org-id: {ORG_ID}' \
-    -H 'x-sandbox-name: {SANDBOX_NAME}' \
-    -H 'Content-Type: application/json' \
-    -d '{
-        "name": "{YOURSOURCE} base connection",
-        "description": "{YOURSOURCE} base connection to authenticate to Platform",
-        "connectionSpec": {
-            "id": "6360f136-5980-4111-8bdf-15d29eab3b5a",
-            "version": "1.0"
-        },
-        "auth": {
-            "specName": "OAuth generic-rest-connector",
-            "params": {
-                "accessToken": "{ACCESS_TOKEN}",
-                "refreshToken": "{REFRESH_TOKEN}",
-                "expirationDate": "{EXPIRATION_DATE}"
-            }
-        }
-    }'
+  'https://platform.adobe.io/data/foundation/flowservice/connections' \
+  -H 'Authorization: Bearer {ACCESS_TOKEN}' \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: {API_KEY}' \
+  -H 'x-gw-ims-org-id: {ORG_ID}' \
+  -H 'x-sandbox-name: {SANDBOX_NAME}'
+  -d '{
+      "name": "Pathfactory base connection with basic authentication",
+      "description": "Pathfactory base connection with basic authentication",
+      "connectionSpec": {
+          "id": "28b8c571-291c-4612-ade2-10cdd01927a1",
+          "version": "1.0"
+      },
+      "auth": {
+          "specName": "Basic Authentication",
+          "params": {
+              "authorizationTestUrl": "https://login.Pathfactory.com/Basic Auth/metadata",
+              "username": "{USERNAME}",
+              "password": "{PASSWORD}"
+          }
+      }
+  }'
 ```
 
 | Property | Description |
 | --- | --- |
 | `name` | The name of your base connection. Ensure that the name of your base connection is descriptive as you can use this to look up information on your base connection. |
-| `description` | An optional value that you can include to provide more information on your base connection. |
+| `description` | (Optional) A property that you can include to provide more information on your base connection. |
 | `connectionSpec.id` | The connection specification ID of your source. This ID can be retrieved after your source is registered and approved through the [!DNL Flow Service] API. |
-| `auth.specName` | The authentication type that you are using to authenticate your source to Platform. |
-| `auth.params.` | Contains the credentials required to authenticate your source. |
+| `auth.specName` | The authentication type that you are using to connect your source to Platform. |
+| `auth.params.authorizationTestUrl` | (Optional) The authorization test URL is used to validate credentials when creating a base connection. If unprovided, credentials are automatically checked during the source connection creation step instead. |
+| `auth.params.username` | The username that corresponds with your [!DNL Pathfactory] account. This is required for basic authentication. |
+| `auth.params.password` | The password that corresponds with your [!DNL Pathfactory] account. This is required for basic authentication. |
 
 **Response**
 
@@ -99,44 +77,102 @@ A successful response returns the newly created base connection, including its u
 
 ```json
 {
-     "id": "70383d02-2777-4be7-a309-9dd6eea1b46d",
-     "etag": "\"d64c8298-add4-4667-9a49-28195b2e2a84\""
+    "id": "9601747c-6874-4c02-bb00-5732a8c43086",
+    "etag": "\"3702dabc-0000-0200-0000-615b5b5a0000\""
 }
 ```
 
-### Explore your source {#explore}
+### Create a [!DNL Pathfactory] base connection using Basic auth refresh code
 
-Using the base connection ID you generated in the previous step, you can explore files and directories by performing GET requests.
-Use the following calls to find the path of the file you wish to bring into [!DNL Platform]:
+To create a [!DNL Pathfactory] base connection using Basic auth refresh code, make a POST request to the `/connections` endpoint while providing credentials for your `authorizationTestUrl`, and `accessToken`.
 
 **API format**
 
-```http
-GET /connections/{BASE_CONNECTION_ID}/explore?objectType=rest&object={OBJECT}&fileType={FILE_TYPE}&preview={PREVIEW}&sourceParams={SOURCE_PARAMS}
+```https
+POST /connections
 ```
 
-When performing GET requests to explore your source's file structure and contents, you must include the query parameters that are listed in the table below:
+**Request**
 
+The following request creates a base connection for [!DNL Pathfactory]:
+
+```shell
+curl -X POST \
+  'https://platform.adobe.io/data/foundation/flowservice/connections' \
+  -H 'Authorization: Bearer {ACCESS_TOKEN}' \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: {API_KEY}' \
+  -H 'x-gw-ims-org-id: {ORG_ID}' \
+  -H 'x-sandbox-name: {SANDBOX_NAME}'
+  -d '{
+      "name": "Pathfactory base connection with Basic auth refresh code",
+      "description": "Pathfactory base connection with Basic auth refresh code",
+      "connectionSpec": {
+          "id": "28b8c571-291c-4612-ade2-10cdd01927a1",
+          "version": "1.0"
+      },
+      "auth": {
+          "specName": "Basic AuthRefreshCode",
+          "params": {
+              "authorizationTestUrl": "https://login.Pathfactory.com/Basic Auth/metadata",
+              "accessToken": "{ACCESS_TOKEN}"
+          }
+      }
+  }'
+```
+
+| Property | Description |
+| --- | --- |
+| `name` | The name of your base connection. Ensure that the name of your base connection is descriptive as you can use this to look up information on your base connection. |
+| `description` | (Optional) A property that you can include to provide more information on your base connection. |
+| `connectionSpec.id` | The connection specification ID of your source. This ID can be retrieved after registering your source using the [!DNL Flow Service] API. |
+| `auth.specName` | The authentication type that you are using to authenticate your source to Platform. |
+| `auth.params.authorizationTestUrl` | (Optional) The authorization Test URL is used to validate credentials when creating a base connection. If unprovided, credentials are automatically checked during the source connection creation step instead. |
+| `auth.params.accessToken` | The corresponding access token used to authenticate your source. This is required for OAuth-based authentication. |
+
+**Response**
+
+A successful response returns the newly created base connection, including its unique connection identifier (`id`). This ID is required to explore your source's file structure and contents in the next step.
+
+```json
+{
+    "id": "9601747c-6874-4c02-bb00-5732a8c43086",
+    "etag": "\"3702dabc-0000-0200-0000-615b5b5a0000\""
+}
+```
+
+## Explore your source {#explore}
+
+Using the base connection ID you generated in the previous step, you can explore files and directories by performing GET requests. When performing GET requests to explore your source's file structure and contents, you must include the query parameters that are listed in the table below:
 
 | Parameter | Description |
 | --------- | ----------- |
 | `{BASE_CONNECTION_ID}` | The base connection ID generated in the previous step. |
-| `objectType=rest` | The type of object that you wish to explore. Currently, this value is always set to `rest`. |
-| `{OBJECT}` | This parameter is required only when viewing a specific directory. Its value represents the path of the directory you wish to explore. |
-| `fileType=json` | The file type of the file you want to bring to Platform. Currently, `json` is the only supported file type. |
+| `{OBJECT_TYPE}` | The type of the object you wish to explore. For REST sources, this value defaults to `rest`. |
+| `{OBJECT}` | The object that you wish to explore. |
+| `{FILE_TYPE}` | This parameter is required only when viewing a specific directory. Its value represents the path of the directory you wish to explore. |
 | `{PREVIEW}` | A boolean value that defines whether the contents of the connection supports preview. |
-| `{SOURCE_PARAMS}` | Defines parameters for the source file you want to bring to Platform. To retrieve the accepted format-type for `{SOURCE_PARAMS}`, you must encode the entire `list_id` string in base64. In the example below, `"list_id": "10c097ca71"` encoded in base64 equates to `eyJsaXN0SWQiOiIxMGMwOTdjYTcxIn0=`. |
+| `{SOURCE_PARAMS}` | A base64-encoded string of your `campaign_id`. |
 
+>[!TIP]
+>
+>To retrieve the accepted format-type for `{SOURCE_PARAMS}`, you must encode the entire `campaignId` string in base64. For example, `{"campaignId": "c66a200cda"}` encoded in base64 equates to `eyJjYW1wYWlnbklkIjoiYzY2YTIwMGNkYSJ9`.
+
+**API format**
+
+```http
+GET /connections/{BASE_CONNECTION_ID}/explore?objectType=rest&objectType={OBJECT_TYPE}&fileType={FILE_TYPE}&preview={PREVIEW}&sourceParams={SOURCE_PARAMS}
+```
 
 **Request**
 
 ```shell
 curl -X GET \
-    'https://platform.adobe.io/data/foundation/flowservice/connections/70383d02-2777-4be7-a309-9dd6eea1b46d/explore?objectType=rest&object=json&fileType=json&preview=true&sourceParams=eyJsaXN0SWQiOiIxMGMwOTdjYTcxIn0=' \
-    -H 'Authorization: Bearer {ACCESS_TOKEN}' \
-    -H 'x-api-key: {API_KEY}' \
-    -H 'x-gw-ims-org-id: {ORG_ID}' \
-    -H 'x-sandbox-name: {SANDBOX_NAME}'
+  'https://platform.adobe.io/data/foundation/flowservice/connections/05c595e5-edc3-45c8-90bb-fcf556b57c4b/explore?objectType=rest&object=json&fileType=json&preview=true&sourceParams=eyJjYW1wYWlnbklkIjoiYzY2YTIwMGNkYSJ9' \
+  -H 'Authorization: Bearer {ACCESS_TOKEN}' \
+  -H 'x-api-key: {API_KEY}' \
+  -H 'x-gw-ims-org-id: {ORG_ID}' \
+  -H 'x-sandbox-name: {SANDBOX_NAME}'
 ```
 
 **Response**
@@ -145,92 +181,84 @@ A successful response returns the structure of the queried file.
 
 ```json
 {
-  "data": [
-    {
-      "members": [
+    "data": [
         {
-          "id": "cff65fb4c5f5828666ad846443720efd",
-          "email_address": "roykent@gmail.com",
-          "unique_email_id": "72c758cbf1",
-          "full_name": "Roy Kent",
-          "web_id": 547094062,
-          "email_type": "html",
-          "status": "subscribed",
-          "merge_fields": {
-            "FNAME": "Roy",
-            "LNAME": "Kent",
-            "ADDRESS": {
-              "addr1": "",
-              "addr2": "",
-              "city": "Richmond",
-              "state": "Virginia",
-              "zip": "",
-              "country": "US"
-            },
-            "PHONE": "",
-            "BIRTHDAY": ""
-          },
-          "stats": {
-            "avg_open_rate": 0,
-            "avg_click_rate": 0
-          },
-          "ip_signup": "",
-          "timestamp_signup": "",
-          "ip_opt": "103.43.112.97",
-          "timestamp_opt": "2021-06-01T15:31:36+00:00",
-          "member_rating": 2,
-          "last_changed": "2021-06-01T15:31:36+00:00",
-          "language": "",
-          "vip": false,
-          "email_client": "",
-          "location": {
-            "latitude": 0,
-            "longitude": 0,
-            "gmtoff": 0,
-            "dstoff": 0,
-            "country_code": "",
-            "timezone": ""
-          },
-          "source": "Admin Add",
-          "tags_count": 0,
-          "tags": [
-             
-          ],
-          "list_id": "10c097ca71"
+            "emails": [
+                {
+                    "campaign_id": "c66a200cda",
+                    "list_id": "10c097ca71",
+                    "list_is_active": true,
+                    "email_id": "cff65fb4c5f5828666ad846443720efd",
+                    "email_address": "kendall2134@gmail.com",
+                    "_links": [
+                        {
+                            "rel": "parent",
+                            "href": "https://us6.api.Pathfactory.com/3.0/reports/c66a200cda/email-activity",
+                            "method": "GET",
+                            "targetSchema": "https://us6.api.Pathfactory.com/schema/3.0/Definitions/Reports/EmailActivity/CollectionResponse.json"
+                        },
+                        {
+                            "rel": "self",
+                            "href": "https://us6.api.Pathfactory.com/3.0/reports/c66a200cda/email-activity/cff65fb4c5f5828666ad846443720efd",
+                            "method": "GET",
+                            "targetSchema": "https://us6.api.Pathfactory.com/schema/3.0/Definitions/Reports/EmailActivity/Response.json"
+                        },
+                        {
+                            "rel": "member",
+                            "href": "https://us6.api.Pathfactory.com/3.0/lists/10c097ca71/members/cff65fb4c5f5828666ad846443720efd",
+                            "method": "GET",
+                            "targetSchema": "https://us6.api.Pathfactory.com/schema/3.0/Definitions/Lists/Members/Response.json"
+                        }
+                    ]
+                },
+                {
+                    "campaign_id": "c66a200cda",
+                    "list_id": "10c097ca71",
+                    "list_is_active": true,
+                    "email_id": "a16b82774b211afaf60902d1afd8abc5",
+                    "email_address": "logan9935890967@gmail.com",
+                    "_links": [
+                        {
+                            "rel": "parent",
+                            "href": "https://us6.api.Pathfactory.com/3.0/reports/c66a200cda/email-activity",
+                            "method": "GET",
+                            "targetSchema": "https://us6.api.Pathfactory.com/schema/3.0/Definitions/Reports/EmailActivity/CollectionResponse.json"
+                        },
+                        {
+                            "rel": "self",
+                            "href": "https://us6.api.Pathfactory.com/3.0/reports/c66a200cda/email-activity/a16b82774b211afaf60902d1afd8abc5",
+                            "method": "GET",
+                            "targetSchema": "https://us6.api.Pathfactory.com/schema/3.0/Definitions/Reports/EmailActivity/Response.json"
+                        },
+                        {
+                            "rel": "member",
+                            "href": "https://us6.api.Pathfactory.com/3.0/lists/10c097ca71/members/a16b82774b211afaf60902d1afd8abc5",
+                            "method": "GET",
+                            "targetSchema": "https://us6.api.Pathfactory.com/schema/3.0/Definitions/Lists/Members/Response.json"
+                        }
+                    ]
+                },
+            ]
         }
-      ],
-      "list_id": "10c097ca71",
-      "total_items": 2,
-      "_links": [
-        {
-          "rel": "self",
-          "href": "https://us6.api.mailchimp.com/3.0/lists/10c097ca71/members",
-          "method": "GET",
-          "targetSchema": "https://us6.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
-          "schema": "https://us6.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json"
-        },
-        {
-          "rel": "parent",
-          "href": "https://us6.api.mailchimp.com/3.0/lists/10c097ca71",
-          "method": "GET",
-          "targetSchema": "https://us6.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json"
-        },
-        {
-          "rel": "create",
-          "href": "https://us6.api.mailchimp.com/3.0/lists/10c097ca71/members",
-          "method": "POST",
-          "targetSchema": "https://us6.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
-          "schema": "https://us6.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/POST.json"
-        }
-      ]
-    }
-  ]
+    ]    
 }
 ```
 
-### Create a source connection {#source-connection}
+## Create a source connection {#source-connection}
 
 You can create a source connection by making a POST request to the [!DNL Flow Service] API. A source connection consists of a connection ID, a path to the source data file, and a connection spec ID.
+
+To create a source connection, you must also define an enum value for the data format attribute.
+
+Use the following the enum values for file-based sources:
+
+| Data format | Enum value |
+| ----------- | ---------- |
+| Delimited | `delimited` |
+| JSON | `json` |
+| Parquet | `parquet` |
+
+For all table-based sources, set the value to `tabular`.
 
 **API format**
 
@@ -240,41 +268,41 @@ POST /sourceConnections
 
 **Request**
 
-The following request creates a source connection for *YOURSOURCE*:
+The following request creates a source connection for [!DNL Pathfactory]:
 
 ```shell
 curl -X POST \
-    'https://platform.adobe.io/data/foundation/flowservice/sourceConnections' \
-    -H 'Authorization: Bearer {ACCESS_TOKEN}' \
-    -H 'x-api-key: {API_KEY}' \
-    -H 'x-gw-ims-org-id: {ORG_ID}' \
-    -H 'x-sandbox-name: {SANDBOX_NAME}' \
-    -H 'Content-Type: application/json' \
-    -d '{
-        "name": "{YOURSOURCE} Source Connection",
-        "description": "{YOURSOURCE} Source Connection",
-        "baseConnectionId": "70383d02-2777-4be7-a309-9dd6eea1b46d",
-        "connectionSpec": {
-            "id": "6360f136-5980-4111-8bdf-15d29eab3b5a",
-            "version": "1.0"
-        },
-        "data": {
-            "format": "json"
-        },
-        "params": {
-            "server": "us6",
-            "listId": "10c097ca71"
-        }
-    }'
+  'https://platform.adobe.io/data/foundation/flowservice/sourceConnections' \
+  -H 'Authorization: Bearer {ACCESS_TOKEN}' \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: {API_KEY}' \
+  -H 'x-gw-ims-org-id: {ORG_ID}' \
+  -H 'x-sandbox-name: {SANDBOX_NAME}'
+  -d '{
+      "name": "Pathfactory source connection to ingest campaign ID",
+      "description": "Pathfactory source connection to ingest campaign ID",
+      "baseConnectionId": "4cea039f-f1cc-4fa5-9136-db8dd4c7fbfa",
+      "connectionSpec": {
+          "id": "28b8c571-291c-4612-ade2-10cdd01927a1",
+          "version": "1.0"
+      },
+      "data": {
+          "format": "json"
+      },
+      "params": {
+          "campaignId": "c66a200cda"
+      }
+  }'
 ```
 
 | Property | Description |
 | --- | --- |
 | `name` | The name of your source connection. Ensure that the name of your source connection is descriptive as you can use this to look up information on your source connection. |
 | `description` | An optional value that you can include to provide more information on your source connection. |
-| `baseConnectionId` | The base connection ID of *YOURSOURCE*. This ID was generated in an earlier step. |
+| `baseConnectionId` | The base connection ID of [!DNL Pathfactory]. This ID was generated in an earlier step. |
 | `connectionSpec.id` | The connection specification ID that corresponds to your source. |
-| `data.format` | The format of the *YOURSOURCE* data that you want to ingest. Currently, the only supported data format is `json`. |
+| `data.format` | The format of the [!DNL Pathfactory] data that you want to ingest. |
+| `params.campaignId` | The [!DNL Pathfactory] campaign ID identifies a specific [!DNL Pathfactory] campaign, which then allows you to send emails to your lists/audiences. |
 
 **Response**
 
@@ -282,28 +310,28 @@ A successful response returns the unique identifier (`id`) of the newly created 
 
 ```json
 {
-     "id": "246d052c-da4a-494a-937f-a0d17b1c6cf5",
-     "etag": "\"712a8c08-fda7-41c2-984b-187f823293d8\""
+    "id": "d6557bf1-7347-415f-964c-9316bd4cbf56",
+    "etag": "\"e205c206-0000-0200-0000-615b5c070000\""
 }
 ```
 
-### Create a target XDM schema {#target-schema}
+## Create a target XDM schema {#target-schema}
 
 In order for the source data to be used in Platform, a target schema must be created to structure the source data according to your needs. The target schema is then used to create a Platform dataset in which the source data is contained.
 
-A target XDM schema can be created by performing a POST request to the [Schema Registry API](https://developer.adobe.com/experience-platform-apis/references/schema-registry/).
+A target XDM schema can be created by performing a POST request to the [Schema Registry API](https://www.adobe.io/experience-platform-apis/references/schema-registry/).
 
-For detailed steps on how to create a target XDM schema, see the tutorial on [creating a schema using the API](https://experienceleague.adobe.com/docs/experience-platform/xdm/api/schemas.html?lang=en#create).
+For detailed steps on how to create a target XDM schema, see the tutorial on [creating a schema using the API](../../../../../xdm/api/schemas.md).
 
 ### Create a target dataset {#target-dataset}
 
 A target dataset can be created by performing a POST request to the [Catalog Service API](https://www.adobe.io/apis/experienceplatform/home/api-reference.html#!acpdr/swagger-specs/catalog.yaml), providing the ID of the target schema within the payload.
 
-For detailed steps on how to create a target dataset, see the tutorial on [creating a dataset using the API](https://experienceleague.adobe.com/docs/experience-platform/catalog/api/create-dataset.html?lang=en).
+For detailed steps on how to create a target dataset, see the tutorial on [creating a dataset using the API](../../../../../catalog/api/create-dataset.md).
 
-### Create a target connection {#target-connection}
+## Create a target connection {#target-connection}
 
-A target connection represents the connection to the destination where the ingested data is to be stored. To create a target connection, you must provide the fixed connection specification ID that corresponds to the [!DNL Data Lake]. This ID is: `c604ff05-7f1a-43c0-8e18-33bf874cb11c`.
+A target connection represents the connection to the destination where the ingested data lands in. To create a target connection, you must provide the fixed connection specification ID that corresponds to the [!DNL Data Lake]. This ID is: `c604ff05-7f1a-43c0-8e18-33bf874cb11c`.
 
 You now have the unique identifiers a target schema a target dataset and the connection spec ID to the [!DNL Data Lake]. Using these identifiers, you can create a target connection using the [!DNL Flow Service] API to specify the dataset that will contain the inbound source data.
 
@@ -315,30 +343,34 @@ POST /targetConnections
 
 **Request**
 
-The following request creates a target connection for *YOURSOURCE*:
+The following request creates a target connection for [!DNL Pathfactory]:
 
 ```shell
 curl -X POST \
-    'https://platform.adobe.io/data/foundation/flowservice/targetConnections' \
-    -H 'Authorization: Bearer {ACCESS_TOKEN}' \
-    -H 'x-api-key: {API_KEY}' \
-    -H 'x-gw-ims-org-id: {ORG_ID}' \
-    -H 'x-sandbox-name: {SANDBOX_NAME}' \
-    -H 'Content-Type: application/json' \
-    -d '{
-        "name": "{YOURSOURCE} Target Connection",
-        "description": "{YOURSOURCE} Target Connection",
-        "connectionSpec": {
-            "id": "c604ff05-7f1a-43c0-8e18-33bf874cb11c",
-            "version": "1.0"
-        },
-        "data": {
-            "format": "json"
-        },
-        "params": {
-            "dataSetId": "5ef4551c52e054191a61a99f"
-        }
-    }'
+  'https://platform.adobe.io/data/foundation/flowservice/targetConnections' \
+  -H 'Authorization: Bearer {ACCESS_TOKEN}' \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: {API_KEY}' \
+  -H 'x-gw-ims-org-id: {ORG_ID}' \
+  -H 'x-sandbox-name: {SANDBOX_NAME}'
+  -d '{
+      "name": "Pathfactory target connection",
+      "description": "Pathfactory target connection",
+      "connectionSpec": {
+          "id": "c604ff05-7f1a-43c0-8e18-33bf874cb11c",
+          "version": "1.0"
+      },
+      "data": {
+          "format": "parquet_xdm",
+          "schema": {
+              "id": "https://ns.adobe.com/{TENANT_ID}/schemas/570630b91eb9d5cf5db0436756abb110d02912917a67da2d",
+              "version": "application/vnd.adobe.xed-full+json;version=1"
+          }
+      },
+      "params": {
+          "dataSetId": "6155e3a9bd13651949515f14"
+      }
+  }'
 ```
 
 | Property | Description |
@@ -346,7 +378,7 @@ curl -X POST \
 | `name` | The name of your target connection. Ensure that the name of your target connection is descriptive as you can use this to look up information on your target connection. |
 | `description` | An optional value that you can include to provide more information on your target connection. |
 | `connectionSpec.id` | The connection specification ID that corresponds to [!DNL Data Lake]. This fixed ID is: `c604ff05-7f1a-43c0-8e18-33bf874cb11c`. |
-| `data.format` | The format of the *YOURSOURCE* data that you want to bring to Platform. |
+| `data.format` | The format of the [!DNL Pathfactory] data that you want to bring to Platform. |
 | `params.dataSetId` | The target dataset ID retrieved in a previous step. |
 
 
@@ -356,14 +388,19 @@ A successful response returns the new target connection's unique identifier (`id
 
 ```json
 {
-     "id": "7c96c827-3ffd-460c-a573-e9558f72f263",
-     "etag": "\"a196f685-f5e8-4c4c-bfbd-136141bb0c6d\""
+    "id": "9463fe9c-027d-4347-a423-894fcd105647",
+    "etag": "\"b902e822-0000-0200-0000-615b5c370000\""
 }
 ```
 
-### Create a mapping {#mapping}
+>[!IMPORTANT]
+>
+>Data prep functions are currently not supported for [!DNL Pathfactory].
 
-In order for the source data to be ingested into a target dataset, it must first be mapped to the target schema that the target dataset adheres to. This is achieved by performing a POST request to [[!DNL Data Prep] API](https://www.adobe.io/experience-platform-apis/references/data-prep/) with data mappings defined within the request payload.
+<!--
+## Create a mapping {#mapping}
+
+In order for the source data to be ingested into a target dataset, it must first be mapped to the target schema that the target dataset adheres to. This is achieved by performing a POST request to Conversion Service with data mappings defined within the request payload.
 
 **API format**
 
@@ -375,44 +412,31 @@ POST /conversion/mappingSets
 
 ```shell
 curl -X POST \
-    'https://platform.adobe.io/data/foundation/conversion/mappingSets' \
-    -H 'Authorization: Bearer {ACCESS_TOKEN}' \
-    -H 'x-api-key: {API_KEY}' \
-    -H 'x-gw-ims-org-id: {ORG_ID}' \
-    -H 'x-sandbox-name: {SANDBOX_NAME}' \
-    -H 'Content-Type: application/json' \
-    -d '{
-        "version": 0,
-        "xdmSchema": "https://ns.adobe.com/{TENANT_ID}/schemas/995dabbea86d58e346ff91bd8aa741a9f36f29b1019138d4",
-        "xdmVersion": "1.0",
-        "id": null,
-        "mappings": [
-            {
-                "destinationXdmPath": "_id",
-                "sourceAttribute": "Id",
-                "identity": false,
-                "identityGroup": null,
-                "namespaceCode": null,
-                "version": 0
-            },
-            {
-                "destinationXdmPath": "person.name.firstName",
-                "sourceAttribute": "FirstName",
-                "identity": false,
-                "identityGroup": null,
-                "namespaceCode": null,
-                "version": 0
-            },
-            {
-                "destinationXdmPath": "person.name.lastName",
-                "sourceAttribute": "LastName",
-                "identity": false,
-                "identityGroup": null,
-                "namespaceCode": null,
-                "version": 0
-            }
-        ]
-    }'
+  'https://platform.adobe.io/data/foundation/conversion/mappingSets' \
+  -H 'Authorization: Bearer {ACCESS_TOKEN}' \
+  -H 'x-api-key: {API_KEY}' \
+  -H 'x-gw-ims-org-id: {ORG_ID}' \
+  -H 'x-sandbox-name: {SANDBOX_NAME}' \
+  -H 'Content-Type: application/json' \
+  -d '{
+      "version": 0,
+      "xdmSchema": "_{TENANT_ID}.schemas.570630b91eb9d5cf5db0436756abb110d02912917a67da2d",
+      "xdmVersion": "1.0",
+      "mappings": [
+      {
+        "destinationXdmPath": "person.name.firstName",
+        "sourceAttribute": "merge_fields.FNAME",
+        "identity": false,
+        "version": 0
+      },
+      {
+        "destinationXdmPath": "person.name.lastName",
+        "sourceAttribute": "merge_fields.LNAME",
+        "identity": false,
+        "version": 0
+      }
+    ]
+  }'
 ```
 
 | Property | Description |
@@ -428,7 +452,7 @@ A successful response returns details of the newly created mapping including its
 
 ```json
 {
-    "id": "bf5286a9c1ad4266baca76ba3adc9366",
+    "id": "5a365b23962d4653b9d9be25832ee5b4",
     "version": 0,
     "createdDate": 1597784069368,
     "modifiedDate": 1597784069368,
@@ -437,17 +461,18 @@ A successful response returns details of the newly created mapping including its
 }
 ```
 
-### Create a flow {#flow}
+--->
 
-The last step towards bringing data from *YOURSOURCE* to Platform is to create a dataflow. By now, you have the following required values prepared:
+## Create a flow {#flow}
+
+The last step towards bringing [!DNL Pathfactory] data to Platform is to create a dataflow. By now, you have the following required values prepared:
 
 * [Source connection ID](#source-connection)
 * [Target connection ID](#target-connection)
-* [Mapping ID](#mapping)
 
 A dataflow is responsible for scheduling and collecting data from a source. You can create a dataflow by performing a POST request while providing the previously mentioned values within the payload.
 
-To schedule an ingestion, you must first set the start time value to epoch time in seconds. Then, you must set the frequency value to one of the five options: `once`, `minute`, `hour`, `day`, or `week`. The interval value designates the period between two consecutive ingestions however, creating a one-time ingestion does not require an interval to be set. For all other frequencies, the interval value must be set to equal or greater than `15`.
+To schedule an ingestion, you must first set the start time value to epoch time in seconds. Then, you must set the frequency value to one of the five options: `once`, `minute`, `hour`, `day`, or `week`. The interval value designates the period between two consecutive ingestions and creating a one-time ingestion (`once`) does not require an interval to be set. For all other frequencies, the interval value must be set to equal or greater than `15`.
 
 
 **API format**
@@ -460,54 +485,42 @@ POST /flows
 
 ```shell
 curl -X POST \
-    'https://platform.adobe.io/data/foundation/flowservice/flows' \
-    -H 'x-api-key: {API_KEY}' \
-    -H 'x-gw-ims-org-id: {ORG_ID}' \
-    -H 'x-sandbox-name: {SANDBOX_NAME}' \
-    -H 'Content-Type: application/json' \
-    -d '{
-        "name": "{YOURSOURCE} dataflow",
-        "description": "{YOURSOURCE} dataflow",
-        "flowSpec": {
-            "id": "6499120c-0b15-42dc-936e-847ea3c24d72",
-            "version": "1.0"
-        },
-        "sourceConnectionIds": [
-            "246d052c-da4a-494a-937f-a0d17b1c6cf5"
-        ],
-        "targetConnectionIds": [
-            "7c96c827-3ffd-460c-a573-e9558f72f263"
-        ],
-        "transformations": [
-            {
-                "name": "Mapping",
-                "params": {
-                    "mappingId": "bf5286a9c1ad4266baca76ba3adc9366",
-                    "mappingVersion": "0"
-                }
-            }
-        ],
-        "scheduleParams": {
-            "startTime": "1625040887",
-            "frequency": "minute",
-            "interval": 15
-        }
-    }'
+  'https://platform.adobe.io/data/foundation/flowservice/flows' \
+  -H 'Authorization: Bearer {ACCESS_TOKEN}' \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: {API_KEY}' \
+  -H 'x-gw-ims-org-id: {ORG_ID}' \
+  -H 'x-sandbox-name: {SANDBOX_NAME}'
+  -d '{
+      "name": "Pathfactory dataflow",
+      "description": "Pathfactory dataflow",
+      "flowSpec": {
+          "id": "6499120c-0b15-42dc-936e-847ea3c24d72",
+          "version": "1.0"
+      },
+      "sourceConnectionIds": [
+          "d6557bf1-7347-415f-964c-9316bd4cbf56"
+      ],
+      "targetConnectionIds": [
+          "9463fe9c-027d-4347-a423-894fcd105647"
+      ],
+      "scheduleParams": {
+          "startTime": "1632809759",
+          "frequency": "minute",
+          "interval": 15
+      }
+  }'
 ```
 
 | Property | Description |
 | --- | --- |
 | `name` | The name of your dataflow. Ensure that the name of your dataflow is descriptive as you can use this to look up information on your dataflow. |
-| `description` | An optional value that you can include to provide more information on your dataflow. |
+| `description` | (Optional) A property that you can include to provide more information on your dataflow. |
 | `flowSpec.id` | The flow specification ID required to create a dataflow. This fixed ID is: `6499120c-0b15-42dc-936e-847ea3c24d72`. |
 | `flowSpec.version` | The corresponding version of the flow specification ID. This value defaults to `1.0`. |
 | `sourceConnectionIds` | The [source connection ID](#source-connection) generated in an earlier step. |
 | `targetConnectionIds` | The [target connection ID](#target-connection) generated in an earlier step. |
-| `transformations` | This property contains the various transformations that are needed to be applied to your data. This property is required when bringing non-XDM-compliant data to Platform. |
-| `transformations.name` | The name assigned to the transformation. |
-| `transformations.params.mappingId` | The [mapping ID](#mapping) generated in an earlier step. |
-| `transformations.params.mappingVersion` | The corresponding version of the mapping ID. This value defaults to `0`. |
-| `scheduleParams.startTime` | This property contains information on the ingestion scheduling of the dataflow. |
+| `scheduleParams.startTime` | The designated start time for when the first ingestion of data begins. |
 | `scheduleParams.frequency` | The frequency at which the dataflow will collect data. Acceptable values include: `once`, `minute`, `hour`, `day`, or `week`. |
 | `scheduleParams.interval` | The interval designates the period between two consecutive flow runs. The interval's value should be a non-zero integer. Interval is not required when frequency is set as `once` and should be greater than or equal to `15` for other frequency values. |
 
@@ -517,8 +530,8 @@ A successful response returns the ID (`id`) of the newly created dataflow. You c
 
 ```json
 {
-     "id": "993f908f-3342-4d9c-9f3c-5aa9a189ca1a",
-     "etag": "\"510bb1d4-8453-4034-b991-ab942e11dd8a\""
+    "id": "be2d5249-eeaf-4a74-bdbd-b7bf62f7b2da",
+    "etag": "\"7e010621-0000-0200-0000-615b5c9b0000\""
 }
 ```
 
@@ -528,20 +541,20 @@ The following section provides information on the steps you can to monitor, upda
 
 ### Monitor your dataflow
 
-Once your dataflow has been created, you can monitor the data that is being ingested through it to see information on flow runs, completion status, and errors. For complete API examples, read the guide on [monitoring your sources dataflows using the API](https://experienceleague.adobe.com/docs/experience-platform/sources/api-tutorials/monitor.html).
+Once your dataflow has been created, you can monitor the data that is being ingested through it to see information on flow runs, completion status, and errors. For complete API examples, read the guide on [monitoring your sources dataflows using the API](../../monitor.md).
 
 ### Update your dataflow
 
-Update the details of your dataflow, such as its name and description, as well as its run schedule and associated mapping sets by making a PATCH request to the `/flows` endpoint of [!DNL Flow Service] API, while providing the ID of your dataflow. When making a PATCH request, you must provide your dataflow's unique `etag` in the `If-Match` header. For complete API examples, read the guide on [updating sources dataflows using the API](https://experienceleague.adobe.com/docs/experience-platform/sources/api-tutorials/update-dataflows.html)
+Update the details of your dataflow, such as its name and description, as well as its run schedule and associated mapping sets by making a PATCH request to the `/flows` endpoint of [!DNL Flow Service] API, while providing the ID of your dataflow. When making a PATCH request, you must provide your dataflow's unique `etag` in the `If-Match` header. For complete API examples, read the guide on [updating sources dataflows using the API](../../update-dataflows.md).
 
 ### Update your account
 
-Update the name, description, and credentials of your source account by performing a PATCH request to the [!DNL Flow Service] API while providing your base connection ID as a query parameter. When making a PATCH request, you must provide your source account's unique `etag` in the `If-Match` header. For complete API examples, read the guide on [updating your source account using the API](https://experienceleague.adobe.com/docs/experience-platform/sources/api-tutorials/update.html).
+Update the name, description, and credentials of your source account by performing a PATCH request to the [!DNL Flow Service] API while providing your base connection ID as a query parameter. When making a PATCH request, you must provide your source account's unique `etag` in the `If-Match` header. For complete API examples, read the guide on [updating your source account using the API](../../update.md).
 
 ### Delete your dataflow
 
-Delete your dataflow by performing a DELETE request to the [!DNL Flow Service] API while providing the ID of the dataflow you want to delete as part of the query parameter. For complete API examples, read the guide on [deleting your dataflows using the API](https://experienceleague.adobe.com/docs/experience-platform/sources/api-tutorials/delete-dataflows.html).
+Delete your dataflow by performing a DELETE request to the [!DNL Flow Service] API while providing the ID of the dataflow you want to delete as part of the query parameter. For complete API examples, read the guide on [deleting your dataflows using the API](../../delete-dataflows.md).
 
 ### Delete your account
 
-Delete your account by performing a DELETE request to the [!DNL Flow Service] API while providing the base connection ID of the account you want to delete. For complete API examples, read the guide on [deleting your source account using the API](https://experienceleague.adobe.com/docs/experience-platform/sources/api-tutorials/delete.html).
+Delete your account by performing a DELETE request to the [!DNL Flow Service] API while providing the base connection ID of the account you want to delete. For complete API examples, read the guide on [deleting your source account using the API](../../delete.md).
