@@ -53,7 +53,7 @@ curl -X POST \
       "auth": {
           "specName": "Basic Authentication",
           "params": {
-              "authorizationTestUrl": "https://login.Pathfactory.com/Basic Auth/metadata",
+              "authorizationTestUrl": "https://login.pathfactory.com/basicauth/metadata",
               "username": "{USERNAME}",
               "password": "{PASSWORD}"
           }
@@ -114,7 +114,7 @@ curl -X POST \
       "auth": {
           "specName": "Basic AuthRefreshCode",
           "params": {
-              "authorizationTestUrl": "https://login.Pathfactory.com/Basic Auth/metadata",
+              "authorizationTestUrl": "https://login.Pathfactory.com/basicauth/metadata",
               "accessToken": "{ACCESS_TOKEN}"
           }
       }
@@ -128,7 +128,7 @@ curl -X POST \
 | `connectionSpec.id` | The connection specification ID of your source. This ID can be retrieved after registering your source using the [!DNL Flow Service] API. |
 | `auth.specName` | The authentication type that you are using to authenticate your source to Platform. |
 | `auth.params.authorizationTestUrl` | (Optional) The authorization Test URL is used to validate credentials when creating a base connection. If unprovided, credentials are automatically checked during the source connection creation step instead. |
-| `auth.params.accessToken` | The corresponding access token used to authenticate your source. This is required for OAuth-based authentication. |
+| `auth.params.accessToken` | The corresponding access token used to authenticate your source. This is required for basicauth-based authentication. |
 
 **Response**
 
@@ -193,19 +193,19 @@ A successful response returns the structure of the queried file.
                     "_links": [
                         {
                             "rel": "parent",
-                            "href": "https://us6.api.Pathfactory.com/3.0/reports/c66a200cda/email-activity",
+                            "href": "http://datalakeapi.pathfactory-development.com/public/v3/visitors",
                             "method": "GET",
                             "targetSchema": "https://us6.api.Pathfactory.com/schema/3.0/Definitions/Reports/EmailActivity/CollectionResponse.json"
                         },
                         {
                             "rel": "self",
-                            "href": "https://us6.api.Pathfactory.com/3.0/reports/c66a200cda/email-activity/cff65fb4c5f5828666ad846443720efd",
+                            "href": " http://datalakeapi.pathfactory-development.com/public/v3/sessions",
                             "method": "GET",
-                            "targetSchema": "https://us6.api.Pathfactory.com/schema/3.0/Definitions/Reports/EmailActivity/Response.json"
+                            "targetSchema": " http://datalakeapi.pathfactory-development.com/public/v3/sessions "
                         },
                         {
                             "rel": "member",
-                            "href": "https://us6.api.Pathfactory.com/3.0/lists/10c097ca71/members/cff65fb4c5f5828666ad846443720efd",
+                            "href": " http://datalakeapi.pathfactory-development.com/public/v3/visitors",
                             "method": "GET",
                             "targetSchema": "https://us6.api.Pathfactory.com/schema/3.0/Definitions/Lists/Members/Response.json"
                         }
@@ -220,19 +220,19 @@ A successful response returns the structure of the queried file.
                     "_links": [
                         {
                             "rel": "parent",
-                            "href": "https://us6.api.Pathfactory.com/3.0/reports/c66a200cda/email-activity",
+                            "href": " http://datalakeapi.pathfactory-development.com/public/v3/sessions",
                             "method": "GET",
-                            "targetSchema": "https://us6.api.Pathfactory.com/schema/3.0/Definitions/Reports/EmailActivity/CollectionResponse.json"
+                            "targetSchema": " http://datalakeapi.pathfactory-development.com/public/v3/sessions"
                         },
                         {
                             "rel": "self",
-                            "href": "https://us6.api.Pathfactory.com/3.0/reports/c66a200cda/email-activity/a16b82774b211afaf60902d1afd8abc5",
+                            "href": " http://datalakeapi.pathfactory-development.com/public/v3/sessions",
                             "method": "GET",
                             "targetSchema": "https://us6.api.Pathfactory.com/schema/3.0/Definitions/Reports/EmailActivity/Response.json"
                         },
                         {
                             "rel": "member",
-                            "href": "https://us6.api.Pathfactory.com/3.0/lists/10c097ca71/members/a16b82774b211afaf60902d1afd8abc5",
+                            "href": " http://datalakeapi.pathfactory-development.com/public/v3/visitors",
                             "method": "GET",
                             "targetSchema": "https://us6.api.Pathfactory.com/schema/3.0/Definitions/Lists/Members/Response.json"
                         }
@@ -558,3 +558,4 @@ Delete your dataflow by performing a DELETE request to the [!DNL Flow Service] A
 ### Delete your account
 
 Delete your account by performing a DELETE request to the [!DNL Flow Service] API while providing the base connection ID of the account you want to delete. For complete API examples, read the guide on [deleting your source account using the API](../../delete.md).
+
